@@ -1,15 +1,12 @@
+import fs from 'fs';
+import { SwaggerMd } from './SwaggerMd';
 
-const generateMarkdown = (json: string): string => {
+const run = (): void => {
+  const [ , , jsonPath] = process.argv;
 
-  return "";
-}
-
-class SwaggerMd {
-  private _object: any;
-
-  constructor(body: string) {
-    this._object = JSON.parse(body);
+  if (fs.statSync(jsonPath)){
+    return;
   }
 }
 
-export default generateMarkdown;
+run();
