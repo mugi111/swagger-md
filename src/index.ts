@@ -9,7 +9,11 @@ const run = (): void => {
     console.log(chalk.red("not found !!"));
     return;
   }
+
+  const jsonBody = fs.readFileSync(jsonPath, "utf-8");
   console.log(chalk.green("Load " + jsonPath));
+
+  const swaggerMd = new SwaggerMd(jsonBody);
 }
 
 const isExist = (path: string): boolean => {
