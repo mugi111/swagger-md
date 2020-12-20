@@ -14,6 +14,7 @@ const run = (): void => {
   console.log(chalk.green("Load " + jsonPath));
 
   const swaggerMd = new SwaggerMd(jsonBody);
+  console.log(chalk.green("Load Success !!"));
 }
 
 const isExist = (path: string): boolean => {
