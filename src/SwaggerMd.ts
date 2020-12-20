@@ -6,9 +6,15 @@ export class SwaggerMd {
 
   constructor(body: string) {
     this._object = JSON.parse(body);
+    this._generated = "";
   }
 
-  private printTitle() {
+  private printTitle = (): void => {
     this._generated += `# ${this._object.info.title}  \n`;
+  }
+
+  output = (): string => {
+    this.printTitle();
+    return this._generated;
   }
 }
