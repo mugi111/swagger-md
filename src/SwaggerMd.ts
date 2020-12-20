@@ -2,9 +2,13 @@ import { SwaggerJson } from "./types";
 
 export class SwaggerMd {
   private _object: SwaggerJson;
+  private _generated: string;
 
   constructor(body: string) {
     this._object = JSON.parse(body);
-    console.log(this._object.swagger);
+  }
+
+  private printTitle() {
+    this._generated += `# ${this._object.info.title}  \n`;
   }
 }
