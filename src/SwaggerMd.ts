@@ -13,8 +13,13 @@ export class SwaggerMd {
     this._generated += `# ${this._object.info.title}  \n`;
   }
 
+  private printVersion = (): void => {
+    this._generated += `version:${this._object.swagger}  \n`;
+  }
+
   output = (): string => {
     this.printTitle();
+    this.printVersion();
     return this._generated;
   }
 }
