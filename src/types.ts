@@ -55,7 +55,7 @@ interface Response {
   [key: string]: ResponseBody;
 }
 
-interface Request {
+export interface Request {
   tags: Tag[];
   summary: string;
   description: string;
