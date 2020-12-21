@@ -1,4 +1,4 @@
-import { Request, Parameter, SwaggerJson } from "./types";
+import { Request, SwaggerJson } from "./types";
 
 export class SwaggerMd {
   private _object: SwaggerJson;
