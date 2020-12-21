@@ -107,5 +107,5 @@ export interface SwaggerJson {
   schemes: string[];
   paths: any;
   securityDefinitions: any;
-  definitions: any; 
+  definitions: any;
 }

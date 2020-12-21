@@ -1,4 +1,4 @@
-import { Request, SwaggerJson } from "./types";
+import { Request, Parameter, SwaggerJson } from "./types";
 
 export class SwaggerMd {
   private _object: SwaggerJson;
@@ -20,9 +20,15 @@ export class SwaggerMd {
   private printEndpoint = (obj: any): void => {
     for (const method in obj) {
       const request = obj[method] as Request;
-      this._generated += `<details><summary>${method}</summary>  \n`;
+      this._generated += `<details><summary>${method}</summary>\n`;
       this._generated += `${request.description}  \n`;
-      this._generated += `\n</details>  \n`;
+      this._generated += `#### Parameters  \n`;
+      this._generated += `| Name | Type | Description |\n`;
+      this._generated += `|------|------|-------------|\n`;
+      for (const param of request.parameters) {
+        this._generated += `| ${param.name} | ${param.type} | ${param.description} |\n`;
+      }
+      this._generated += `\n</details>\n`;
     }
   }
 
