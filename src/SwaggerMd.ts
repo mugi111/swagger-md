@@ -82,7 +82,7 @@ export class SwaggerMd {
   }
 
   private _printVersion = (): void => {
-    this._generated += `version:${this._object.swagger}  \n`;
+    this._generated += `version: ${this._object.swagger}  \n`;
   }
 
   private _printRequest = (reqs: RequestWithData[]): void => {
@@ -111,14 +111,16 @@ export class SwaggerMd {
     this._generated += `| Parameter | Type | Example | Required |\n`;
     this._generated += `|-----------|------|---------|----------|\n`;
     for (const property of properties) {
-      this._generated += `| ${property.name} | ${property.type} | ${property.example} | ${property.required} |\n`;
+      const typeText: string = this._models.some(e => e.name === property.ref) ? `[${property.ref}](#${property.ref.toLowerCase()})` : `${property.type}`;
+      this._generated += `| ${property.name} | ${typeText} | ${property.example} | ${property.required} |\n`;
     }
+    this._generated += "\n";
   }
 
   private _printModels = (): void => {
     this._generated += `## Model  \n`;
     for (const model of this._models) {
-      this._generated += `### ${model.name}  \n`;
+      this._generated += `### ${model.name}<a id="${model.name}"></a>  \n`;
       this._printProperties(model.properties);
     }
   }
