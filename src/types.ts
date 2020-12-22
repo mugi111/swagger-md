@@ -81,7 +81,7 @@ export interface Paths {
   [key: string]: { [key: string]: Request };
 }
 
-export interface Proparty {
+export interface Property {
   type: string;
   format: string;
   description: string;
@@ -91,14 +91,17 @@ interface Xml {
   name: string;
 }
 
-interface Model {
+interface ModelsProperty {
   type: string;
+  format: string;
   properties: any;
   xml: Xml;
 }
 
-export interface Definitions {
-  [key: string]: { [key: string]: Model };
+export interface Properties {
+  type: string;
+  required: string[];
+  properties: { [key: string]: ModelsProperty };
 }
 
 export interface Info {
@@ -119,5 +122,5 @@ export interface SwaggerJson {
   schemes: string[];
   paths: any;
   securityDefinitions: any;
-  definitions: any;
+  definitions: { [key: string]: Properties };
 }
