@@ -10,10 +10,12 @@ const run = (): void => {
     return;
   }
 
-  const jsonBody = fs.readFileSync(jsonPath, "utf-8");
+  const jsonBody: string = fs.readFileSync(jsonPath, "utf-8");
   console.log(chalk.green("Load " + jsonPath));
 
-  const swaggerMd = new SwaggerMd(jsonBody);
+  const swaggerMd: SwaggerMd = new SwaggerMd(jsonBody);
+  console.log(chalk.green("Load Success !!"));
+  console.log(swaggerMd.output());
 }
 
 const isExist = (path: string): boolean => {
