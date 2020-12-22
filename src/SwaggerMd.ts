@@ -53,14 +53,23 @@ export class SwaggerMd {
         properties
       }
       for (const pName in this._object.definitions[mName].properties) {
+        const required =
+          this._object.definitions[mName].required != null ?
+          this._object.definitions[mName].required.includes(pName) :
+          false;
+        const ref = 
+          this._object.definitions[mName].properties[pName].$ref != null ? 
+          this._object.definitions[mName].properties[pName].$ref.replace("#/definitions/", "") : 
+          "";
+
         properties.push(
           {
             name: pName,
             type: this._object.definitions[mName].properties[pName].type,
             format: this._object.definitions[mName].properties[pName].format,
             example: this._object.definitions[mName].properties[pName].example,
-            required: this._object.definitions[mName].required.includes(pName),
-            ref: this._object.definitions[mName].properties[pName].$ref.replace("#/definitions/", "")
+            required,
+            ref
           }
         );
       }
@@ -98,10 +107,25 @@ export class SwaggerMd {
     }
   }
 
+  private _printProperties = (properties: FormattedModelProperty[]): void => {
+    for (const property of properties) {
+      console.log(property);
+    }
+  }
+
+  private _printModels = (): void => {
+    this._generated += `## Model  \n`;
+    for (const model of this._models) {
+      this._generated += `### ${model.name}  \n`;
+      this._printProperties(model.properties);
+    }
+  }
+
   output = (): string => {
     this._printTitle();
     this._printVersion();
     this._printRequests();
+    this._printModels();
     return this._generated;
   }
 }
