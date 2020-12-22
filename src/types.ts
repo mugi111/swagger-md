@@ -109,6 +109,7 @@ export interface FormattedModelProperty {
   name: string;
   type: string;
   format: string;
+  example: string;
   required: boolean;
   ref: string;
 }

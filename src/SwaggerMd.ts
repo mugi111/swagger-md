@@ -1,20 +1,26 @@
-import { Request, Tag, SwaggerJson, ClassifiedRequests, RequestWithData } from "./types";
+import { Request, Tag, SwaggerJson, ClassifiedRequests, RequestWithData, FormattedModelProperty, FormattedModel } from "./types";
 
 export class SwaggerMd {
   private _object: SwaggerJson;
   private _generated: string;
+  private _filteredReqs: ClassifiedRequests[];
+  private _models: FormattedModel[];
 
   constructor(body: string) {
     this._object = JSON.parse(body);
     this._generated = "";
+    this._filteredReqs = [];
+    this._models = [];
+
+    this._filterWithTags();
+    this._formatModels();
   }
 
   private _getTags = (): Tag[] => {
     return this._object.tags;
   }
 
-  private _filterWithTags = (): ClassifiedRequests[] => {
-    let filtered: ClassifiedRequests[] = [];
+  private _filterWithTags = (): void => {
     for (const tag of this._getTags()) {
       let reqs: RequestWithData[] = []
       for (const path in this._object.paths) {
@@ -28,14 +34,38 @@ export class SwaggerMd {
           );
         }
       }
-      filtered.push(
+      this._filteredReqs.push(
         {
           tag,
           requests: reqs
         }
       );
     }
-    return filtered;
+  }
+
+  private _formatModels = (): void => {
+    for (const mName in this._object.definitions) {
+      let properties: FormattedModelProperty[] = [];
+      let model: FormattedModel =
+      {
+        name: mName,
+        type: this._object.definitions[mName].type,
+        properties
+      }
+      for (const pName in this._object.definitions[mName].properties) {
+        properties.push(
+          {
+            name: pName,
+            type: this._object.definitions[mName].properties[pName].type,
+            format: this._object.definitions[mName].properties[pName].format,
+            example: this._object.definitions[mName].properties[pName].example,
+            required: this._object.definitions[mName].required.includes(pName),
+            ref: this._object.definitions[mName].properties[pName].$ref.replace("#/definitions/", "")
+          }
+        );
+      }
+      this._models.push(model);
+    }
   }
 
   private _printTitle = (): void => {
@@ -61,9 +91,8 @@ export class SwaggerMd {
   }
 
   private _printRequests = (): void => {
-    const filtered: ClassifiedRequests[] = this._filterWithTags();
     this._generated += `## Endpoint  \n`;
-    for (const reqs of filtered) {
+    for (const reqs of this._filteredReqs) {
       this._generated += `### ${reqs.tag.name}  \n`;
       this._printRequest(reqs.requests);
     }
