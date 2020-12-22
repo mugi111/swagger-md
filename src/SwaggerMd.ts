@@ -108,8 +108,10 @@ export class SwaggerMd {
   }
 
   private _printProperties = (properties: FormattedModelProperty[]): void => {
+    this._generated += `| Parameter | Type | Example | Required |\n`;
+    this._generated += `|-----------|------|---------|----------|\n`;
     for (const property of properties) {
-      console.log(property);
+      this._generated += `| ${property.name} | ${property.type} | ${property.example} | ${property.required} |\n`;
     }
   }
 
