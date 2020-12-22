@@ -63,6 +63,11 @@ export interface Request {
   produces: Produce[];
   parameters: Parameter[];
   responses: Response[];
+  deprecated: boolean;
+}
+
+export interface ClassifiedRequest extends Tag, Request {
+  endpoint: string;
 }
 
 export interface Paths {
