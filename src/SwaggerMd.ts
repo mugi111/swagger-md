@@ -38,42 +38,41 @@ export class SwaggerMd {
     return filtered;
   }
 
-  private printTitle = (): void => {
+  private _printTitle = (): void => {
     this._generated += `# ${this._object.info.title}  \n`;
   }
 
-  private printVersion = (): void => {
+  private _printVersion = (): void => {
     this._generated += `version:${this._object.swagger}  \n`;
   }
 
-  private printEndpoint = (obj: any): void => {
-    for (const method in obj) {
-      const request = obj[method] as Request;
-      this._generated += `#### ${method}\n`;
-      this._generated += `${request.description}  \n`;
+  private _printRequest = (reqs: RequestWithData[]): void => {
+    for (const req of reqs) {
+      this._generated += `#### ${req.method} ${req.endpoint}\n`;
+      this._generated += `${req.request.description}  \n`;
       this._generated += `##### Parameters  \n`;
       this._generated += `| Name | Type | Description |\n`;
       this._generated += `|------|------|-------------|\n`;
-      for (const param of request.parameters) {
+      for (const param of req.request.parameters) {
         this._generated += `| ${param.name} | ${param.type} | ${param.description} |\n`;
       }
       this._generated += `\n`;
     }
   }
 
-  private printEndpoints = (): void => {
+  private _printRequests = (): void => {
+    const filtered: ClassifiedRequests[] = this._filterWithTags();
     this._generated += `## Endpoint  \n`;
-    for (const path in this._object.paths) {
-      this._generated += `### ${path}  \n`;
-      this.printEndpoint(this._object.paths[path]);
+    for (const reqs of filtered) {
+      this._generated += `### ${reqs.tag.name}  \n`;
+      this._printRequest(reqs.requests);
     }
   }
 
   output = (): string => {
-    this.printTitle();
-    this.printVersion();
-    this.printEndpoints();
-    this._filterWithTags();
+    this._printTitle();
+    this._printVersion();
+    this._printRequests();
     return this._generated;
   }
 }
