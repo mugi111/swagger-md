@@ -1,4 +1,4 @@
-import { Request, SwaggerJson } from "./types";
+import { Request, Tag, SwaggerJson, ClassifiedRequests, RequestWithData } from "./types";
 
 export class SwaggerMd {
   private _object: SwaggerJson;
@@ -7,6 +7,35 @@ export class SwaggerMd {
   constructor(body: string) {
     this._object = JSON.parse(body);
     this._generated = "";
+  }
+
+  private _getTags = (): Tag[] => {
+    return this._object.tags;
+  }
+
+  private _filterWithTags = (): ClassifiedRequests[] => {
+    let filtered: ClassifiedRequests[] = [];
+    for (const tag of this._getTags()) {
+      let reqs: RequestWithData[] = []
+      for (const path in this._object.paths) {
+        for (const method in this._object.paths[path]) {
+          reqs.push(
+            {
+              endpoint: path,
+              method: method,
+              request: this._object.paths[path][method]
+            }
+          );
+        }
+      }
+      filtered.push(
+        {
+          tag,
+          requests: reqs
+        }
+      );
+    }
+    return filtered;
   }
 
   private printTitle = (): void => {
@@ -44,6 +73,7 @@ export class SwaggerMd {
     this.printTitle();
     this.printVersion();
     this.printEndpoints();
+    this._filterWithTags();
     return this._generated;
   }
 }

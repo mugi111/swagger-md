@@ -66,13 +66,15 @@ export interface Request {
   deprecated: boolean;
 }
 
-export interface RequestWithEndpoint extends Request {
+export interface RequestWithData {
   endpoint: string;
+  method: string;
+  request: Request;
 }
 
-export interface ClassifiedRequests extends Tag {
-  endpoint: string;
-  requests: Request[];
+export interface ClassifiedRequests {
+  tag: Tag;
+  requests: RequestWithData[];
 }
 
 export interface Paths {
