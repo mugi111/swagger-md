@@ -94,14 +94,29 @@ interface Xml {
 interface ModelsProperty {
   type: string;
   format: string;
-  properties: any;
+  example: string;
+  $ref: string;
   xml: Xml;
 }
 
-export interface Properties {
+export interface Model {
   type: string;
   required: string[];
   properties: { [key: string]: ModelsProperty };
+}
+
+export interface FormattedModelProperty {
+  name: string;
+  type: string;
+  format: string;
+  required: boolean;
+  ref: string;
+}
+
+export interface FormattedModel {
+  name: string;
+  type: string;
+  properties: FormattedModelProperty[];
 }
 
 export interface Info {
@@ -122,5 +137,5 @@ export interface SwaggerJson {
   schemes: string[];
   paths: any;
   securityDefinitions: any;
-  definitions: { [key: string]: Properties };
+  definitions: { [key: string]: Model };
 }
