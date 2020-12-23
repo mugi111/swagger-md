@@ -91,7 +91,7 @@ interface Xml {
   name: string;
 }
 
-interface ModelsProperty {
+export interface ModelsProperty {
   type: string;
   format: string;
   example: string;
