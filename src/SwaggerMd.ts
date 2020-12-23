@@ -1,4 +1,4 @@
-import { Request, Tag, SwaggerJson, ClassifiedRequests, RequestWithData, FormattedModelProperty, FormattedModel } from "./types";
+import { ModelsProperty, Tag, SwaggerJson, ClassifiedRequests, RequestWithData, FormattedModelProperty, FormattedModel } from "./types";
 
 export class SwaggerMd {
   private _object: SwaggerJson;
@@ -49,25 +49,26 @@ export class SwaggerMd {
       let model: FormattedModel =
       {
         name: mName,
-        type: this._object.definitions[mName].type,
+        type: this._object.definitions[mName].type !== undefined ? this._object.definitions[mName].type : " - ",
         properties
       }
       for (const pName in this._object.definitions[mName].properties) {
-        const required =
+        const property: ModelsProperty = this._object.definitions[mName].properties[pName];
+        const required = 
           this._object.definitions[mName].required != null ?
           this._object.definitions[mName].required.includes(pName) :
           false;
         const ref = 
-          this._object.definitions[mName].properties[pName].$ref != null ? 
-          this._object.definitions[mName].properties[pName].$ref.replace("#/definitions/", "") : 
+          property.$ref != null ? 
+          property.$ref.replace("#/definitions/", "") : 
           "";
 
         properties.push(
           {
             name: pName,
-            type: this._object.definitions[mName].properties[pName].type,
-            format: this._object.definitions[mName].properties[pName].format,
-            example: this._object.definitions[mName].properties[pName].example,
+            type: property.type !== undefined ? property.type : " - ",
+            format: property.format !== undefined ? property.format : " - ",
+            example: property.example !== undefined ? property.example : " - ",
             required,
             ref
           }
@@ -93,7 +94,8 @@ export class SwaggerMd {
       this._generated += `| Name | Type | Description |\n`;
       this._generated += `|------|------|-------------|\n`;
       for (const param of req.request.parameters) {
-        this._generated += `| ${param.name} | ${param.type} | ${param.description} |\n`;
+        const _type = param.type !== undefined ? param.type : " - ";
+        this._generated += `| ${param.name} | ${_type} | ${param.description} |\n`;
       }
       this._generated += `\n`;
     }
