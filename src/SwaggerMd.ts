@@ -107,7 +107,9 @@ export class SwaggerMd {
       for (const resCode in req.request.responses) {
         const res: Response = req.request.responses[resCode];
         const _description = res.description != null ? res.description : " - ";
-        const _schema = res.schema == null ? " - " : res.schema;
+        const _schema = res.schema == null ? " - " :
+          res.schema.$ref == null ? " - " :
+            `[${res.schema.$ref.replace("#/definitions/", "")}](#${res.schema.$ref.replace("#/definitions/", "").toLowerCase()})`;
         this._generated += `| ${resCode} | ${_description} | ${_schema} |\n`;
       }
       this._generated += `\n`;

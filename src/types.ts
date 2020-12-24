@@ -39,15 +39,14 @@ interface Parameter {
   collectionFormat: string;
 }
 
-interface Schema {
-  type: string;
-  items: { [key: string]: string; },
+interface ResSchema {
+  $ref: string;
 }
 
 export interface Response {
   description: string;
   header: any;
-  schema: Schema;
+  schema: ResSchema;
   security: { [key: string]: string[] }
 }
 
