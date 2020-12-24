@@ -119,7 +119,7 @@ export class SwaggerMd {
   private _printRequests = (): void => {
     this._generated += `## Endpoint  \n`;
     for (const reqs of this._filteredReqs) {
-      this._generated += `### ${reqs.tag.name}  \n`;
+      this._generated += `### Tag - ${reqs.tag.name}  \n`;
       this._printRequest(reqs.requests);
     }
   }
