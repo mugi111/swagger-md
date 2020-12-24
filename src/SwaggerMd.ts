@@ -54,14 +54,14 @@ export class SwaggerMd {
       }
       for (const pName in this._object.definitions[mName].properties) {
         const property: ModelsProperty = this._object.definitions[mName].properties[pName];
-        const required = 
+        const required =
           this._object.definitions[mName].required != null ?
-          this._object.definitions[mName].required.includes(pName) :
-          false;
-        const ref = 
-          property.$ref != null ? 
-          property.$ref.replace("#/definitions/", "") : 
-          "";
+            this._object.definitions[mName].required.includes(pName) :
+            false;
+        const ref =
+          property.$ref != null ?
+            property.$ref.replace("#/definitions/", "") :
+            "";
 
         properties.push(
           {
@@ -90,6 +90,7 @@ export class SwaggerMd {
     for (const req of reqs) {
       this._generated += `#### ${req.method} ${req.endpoint}\n`;
       this._generated += `${req.request.description}  \n`;
+      if (req.request.parameters == null || req.request.parameters.length <= 0) return;
       this._generated += `##### Parameters  \n`;
       this._generated += `| Name | Type | Description |\n`;
       this._generated += `|------|------|-------------|\n`;
@@ -99,6 +100,13 @@ export class SwaggerMd {
       }
       this._generated += `\n`;
     }
+  }
+
+  private _printResponses = (): void => {
+    this._generated += `#### Responses  \n`;
+    this._generated += `| Code | Description | Schema |\n`;
+    this._generated += `|------|-------------|--------|\n`;
+
   }
 
   private _printRequests = (): void => {
