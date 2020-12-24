@@ -44,15 +44,15 @@ interface Schema {
   items: { [key: string]: string; },
 }
 
-interface ResponseBody {
+export interface Response {
   description: string;
   header: any;
   schema: Schema;
   security: { [key: string]: string[] }
 }
 
-interface Response {
-  [key: string]: ResponseBody;
+export interface Responses {
+  [key: string]: Response;
 }
 
 export interface Request {
@@ -62,7 +62,7 @@ export interface Request {
   operationId: string;
   produces: Produce[];
   parameters: Parameter[];
-  responses: Response[];
+  responses: Responses;
   deprecated: boolean;
 }
 

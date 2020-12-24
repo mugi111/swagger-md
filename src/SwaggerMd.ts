@@ -1,4 +1,4 @@
-import { ModelsProperty, Tag, SwaggerJson, ClassifiedRequests, RequestWithData, FormattedModelProperty, FormattedModel } from "./types";
+import { ModelsProperty, Tag, SwaggerJson, ClassifiedRequests, RequestWithData, FormattedModelProperty, FormattedModel, Response } from "./types";
 
 export class SwaggerMd {
   private _object: SwaggerJson;
@@ -90,23 +90,28 @@ export class SwaggerMd {
     for (const req of reqs) {
       this._generated += `#### ${req.method} ${req.endpoint}\n`;
       this._generated += `${req.request.description}  \n`;
-      if (req.request.parameters == null || req.request.parameters.length <= 0) return;
-      this._generated += `##### Parameters  \n`;
-      this._generated += `| Name | Type | Description |\n`;
-      this._generated += `|------|------|-------------|\n`;
-      for (const param of req.request.parameters) {
-        const _type = param.type !== undefined ? param.type : " - ";
-        this._generated += `| ${param.name} | ${_type} | ${param.description} |\n`;
+      if (req.request.parameters == null || req.request.parameters.length <= 0) { }
+      else {
+        this._generated += `##### Parameters  \n`;
+        this._generated += `| Name | Type | Description |\n`;
+        this._generated += `|------|------|-------------|\n`;
+        for (const param of req.request.parameters) {
+          const _type = param.type !== undefined ? param.type : " - ";
+          this._generated += `| ${param.name} | ${_type} | ${param.description} |\n`;
+        }
+        this._generated += `\n`;
+      }
+      this._generated += `#### Responses  \n`;
+      this._generated += `| Code | Description | Schema |\n`;
+      this._generated += `|------|-------------|--------|\n`;
+      for (const resCode in req.request.responses) {
+        const res: Response = req.request.responses[resCode];
+        const _description = res.description != null ? res.description : " - ";
+        const _schema = res.schema == null ? " - " : res.schema;
+        this._generated += `| ${resCode} | ${_description} | ${_schema} |\n`;
       }
       this._generated += `\n`;
     }
-  }
-
-  private _printResponses = (): void => {
-    this._generated += `#### Responses  \n`;
-    this._generated += `| Code | Description | Schema |\n`;
-    this._generated += `|------|-------------|--------|\n`;
-
   }
 
   private _printRequests = (): void => {
