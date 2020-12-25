@@ -1,0 +1,7 @@
+{
+  "name": "swagger-md-vercel",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "author": "mugi111",
+  "license": "MIT"
+}
