@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "author": "mugi111",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/node": "^1.8.5"
+  }
 }
