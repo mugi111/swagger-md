@@ -1,5 +1,5 @@
 {
-  "name": "swagger-md",
+  "name": "@mugi111/swagger-md",
   "version": "0.0.1",
   "description": "OpenApi json to markdown",
   "main": "dist/index.js",
@@ -17,5 +17,14 @@
   },
   "scripts": {
     "build": "tsc"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mugi111/swagger-md.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mugi111/swagger-md/issues"
+  },
+  "homepage": "https://github.com/mugi111/swagger-md#readme"
 }
