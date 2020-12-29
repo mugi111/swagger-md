@@ -2,6 +2,16 @@
 # yarn lockfile v1
 
 
+"@mugi111/swagger-md@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@mugi111/swagger-md/-/swagger-md-0.0.1.tgz#c548079379ddf359b25e5c440a6e3335deb9c58a"
+  integrity sha512-h288ohBWxo7lShKJgHIydXb3kz2Zfcq0vePcH82S5GLeRLMnWebF9pxT4iiI399JxSnXq2mKa8P/7U/w/4n9LQ==
+  dependencies:
+    "@types/chalk" "^2.2.0"
+    "@types/node" "^14.14.14"
+    chalk "^4.1.0"
+    typescript "^4.1.3"
+
 "@types/chalk@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@types/chalk/-/chalk-2.2.0.tgz#b7f6e446f4511029ee8e3f43075fb5b73fbaa0ba"
@@ -94,14 +104,6 @@ supports-color@^7.1.0:
   integrity sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==
   dependencies:
     has-flag "^4.0.0"
-
-swagger-md@../:
-  version "0.0.1"
-  dependencies:
-    "@types/chalk" "^2.2.0"
-    "@types/node" "^14.14.14"
-    chalk "^4.1.0"
-    typescript "^4.1.3"
 
 ts-node@8.9.1:
   version "8.9.1"

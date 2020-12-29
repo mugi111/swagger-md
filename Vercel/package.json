@@ -5,7 +5,7 @@
   "author": "mugi111",
   "license": "MIT",
   "dependencies": {
-    "@vercel/node": "^1.8.5",
-    "swagger-md": "../"
+    "@mugi111/swagger-md": "^0.0.1",
+    "@vercel/node": "^1.8.5"
   }
 }

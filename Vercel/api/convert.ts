@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from '@vercel/node';
-import SwaggerMd from 'swagger-md';
+import SwaggerMd from '@mugi111/swagger-md';
 
 export default (request: NowRequest, response: NowResponse) => {
   if(request.method === 'POST') {
