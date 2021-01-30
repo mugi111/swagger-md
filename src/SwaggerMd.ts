@@ -22,7 +22,7 @@ export class SwaggerMd {
       for (const method in this._object.paths[path]) {
         const req = this._object.paths[path][method];
         req.tags.forEach((tag) => {
-          if(!tags.concat(tag)){
+          if(!tags.includes(tag)){
             tags.push(tag);
           }
         });
@@ -32,7 +32,8 @@ export class SwaggerMd {
   }
 
   private _filterWithTags = (): void => {
-    for (const tag of this._getTags()) {
+    const tags = this._getTags();
+    for (const tag of tags) {
       let reqs: RequestWithData[] = []
       for (const path in this._object.paths) {
         for (const method in this._object.paths[path]) {
@@ -94,7 +95,7 @@ export class SwaggerMd {
   }
 
   private _printVersion = (): void => {
-    this._generated += `version: ${this._object.swagger}  \n`;
+    this._generated += `version: ${this._object.info.version}  \n`;
   }
 
   private _printRequest = (reqs: RequestWithData[]): void => {
