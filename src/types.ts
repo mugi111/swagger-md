@@ -81,7 +81,7 @@ export interface Paths {
 }
 
 interface Schemas {
-  [key: string]: { [key: string]: Schema };
+  [key: string]: Schema;
 }
 
 interface Examples {
@@ -96,7 +96,7 @@ export interface Example {
 export interface Components {
   schemas: Schemas;
   examples: Examples;
-  Responses: Responses;
+  responses: Responses;
 }
 
 export interface Property {
@@ -157,7 +157,7 @@ export interface SwaggerJson {
   info: Info;
   servers: Server[];
   tags: Tag[];
-  paths: any;
+  paths: Paths;
   security: any;
   components: Components;
   externalDocs: any;
