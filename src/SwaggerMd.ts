@@ -101,7 +101,7 @@ export class SwaggerMd {
   private _printRequest = (reqs: RequestWithData[]): void => {
     for (const req of reqs) {
       this._generated += `#### ${req.method} ${req.endpoint}\n`;
-      this._generated += `${req.request.description}  \n`;
+      this._generated += `${req.request.description !== undefined ? req.request.description: ""}  \n`;
       if (req.request.parameters == null || req.request.parameters.length <= 0) { }
       else {
         this._generated += `##### Parameters  \n`;
