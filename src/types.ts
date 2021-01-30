@@ -80,6 +80,25 @@ export interface Paths {
   [key: string]: { [key: string]: Request };
 }
 
+interface Schemas {
+  [key: string]: { [key: string]: Schema };
+}
+
+interface Examples {
+  [key: string]: { [key: string]: Example };
+}
+
+export interface Example {
+  summary: string;
+  value: string;
+}
+
+export interface Components {
+  schemas: Schemas;
+  examples: Examples;
+  Responses: Responses;
+}
+
 export interface Property {
   type: string;
   format: string;
@@ -98,7 +117,7 @@ export interface ModelsProperty {
   xml: Xml;
 }
 
-export interface Model {
+export interface Schema {
   type: string;
   required: string[];
   properties: { [key: string]: ModelsProperty };
@@ -128,14 +147,18 @@ export interface Info {
   license: License;
 }
 
+export interface Server {
+  url: string;
+  description: string;
+}
+
 export interface SwaggerJson {
-  swagger: string;
-  info: Info,
-  host: string;
-  basePath: string;
+  openapi: string;
+  info: Info;
+  servers: Server[];
   tags: Tag[];
-  schemes: string[];
-  paths: Paths;
-  securityDefinitions: any;
-  definitions: { [key: string]: Model };
+  paths: any;
+  security: any;
+  components: Components;
+  externalDocs: any;
 }
