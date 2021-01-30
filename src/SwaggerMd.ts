@@ -17,7 +17,18 @@ export class SwaggerMd {
   }
 
   private _getTags = (): Tag[] => {
-    return this._object.tags;
+    const tags: Tag[] = [];
+    for (const path in this._object.paths) {
+      for (const method in this._object.paths[path]) {
+        const req = this._object.paths[path][method];
+        req.tags.forEach((tag) => {
+          if(!tags.concat(tag)){
+            tags.push(tag);
+          }
+        });
+      }
+    }
+    return tags;
   }
 
   private _filterWithTags = (): void => {

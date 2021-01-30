@@ -135,7 +135,7 @@ export interface SwaggerJson {
   basePath: string;
   tags: Tag[];
   schemes: string[];
-  paths: any;
+  paths: Paths;
   securityDefinitions: any;
   definitions: { [key: string]: Model };
 }
