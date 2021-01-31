@@ -163,9 +163,9 @@ export class SwaggerMd {
 
   private _printContents = (): void => {
     this._tags.forEach((tag, i) => {
-      this._generated += `- ${tag}`;
-      this._generated += `\t- parameters${i === 0 ? "" : ("-" + i)}`;
-      this._generated += `\t- responses${i === 0 ? "" : ("-" + i)}`;
+      this._generated += `- [${tag.name}](${tag.name.toLowerCase()})  \n`;
+      this._generated += `\t- parameters${i === 0 ? "" : ("-" + i)}  \n`;
+      this._generated += `\t- responses${i === 0 ? "" : ("-" + i)}  \n`;
     });
     this._generated += "[Schema](#schema)  \n";
     this._models.forEach((model) => {
