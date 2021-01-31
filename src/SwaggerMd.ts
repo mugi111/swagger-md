@@ -22,7 +22,7 @@ export class SwaggerMd {
   }
 
   private _convertToLink = (s: string): string => {
-    return s.replace("\n", "-").toLowerCase();
+    return s.replace("\n", "-").replace(/[^a-zA-Z0-9\p{Hiragana}\p{Katakana}\p{Han}]+/g, "").toLowerCase();
   }
 
   private _getTags = (): string[] => {
