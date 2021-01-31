@@ -151,10 +151,12 @@ export class SwaggerMd {
   }
 
   private _printContents = (): void => {
-    this._generated += "## [Endpoint](#endpoint)  \n";
-    this._generated += "## [Schema](#schema)  \n";
+    this._generated += "[Endpoint](#endpoint)  \n";
+    this._generated += "---\n";
+    this._generated += "[Schema](#schema)  \n";
+    this._generated += "---\n";
     this._models.forEach((model) => {
-      this._generated += `- [${model.name}](${model.name.toLowerCase()})  \n`;
+      this._generated += `- [${model.name}](#${model.name.toLowerCase()})  \n`;
     });
   }
 
