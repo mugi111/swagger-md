@@ -90,12 +90,8 @@ export class SwaggerMd {
     }
   }
 
-  private _printTitle = (): void => {
-    this._generated += `# ${this._object.info.title}  \n`;
-  }
-
-  private _printVersion = (): void => {
-    this._generated += `version: ${this._object.info.version}  \n`;
+  private _printInfo = (): void => {
+    this._generated += `# ${this._object.info.title} ${this._object.info.version}  \n`;
   }
 
   private _printRequest = (reqs: RequestWithData[]): void => {
@@ -146,19 +142,27 @@ export class SwaggerMd {
     this._generated += "\n";
   }
 
-  private _printModels = (): void => {
-    this._generated += `## Model  \n`;
+  private _printSchemas = (): void => {
+    this._generated += `## Schema  \n`;
     for (const model of this._models) {
-      this._generated += `### ${model.name}<a id="${model.name}"></a>  \n`;
+      this._generated += `### ${model.name}  \n`;
       this._printProperties(model.properties);
     }
   }
 
-  output = (): string => {
-    this._printTitle();
-    this._printVersion();
+  private _printContents = (): void => {
+    this._generated += "## [Endpoint](#endpoint)  \n";
+    this._generated += "## [Schema](#schema)  \n";
+    this._models.forEach((model) => {
+      this._generated += `- [${model.name}](${model.name.toLowerCase()})  \n`;
+    });
+  }
+
+  output = (contents: boolean): string => {
+    this._printInfo();
+    if (contents) this._printContents();
     this._printRequests();
-    this._printModels();
+    this._printSchemas();
     return this._generated;
   }
 }
