@@ -6,6 +6,7 @@ export class SwaggerMd {
   private _filteredReqs: ClassifiedRequests[];
   private _models: FormattedModel[];
   private _topLink: string;
+  private _tags: Tag[];
 
   constructor(body: string) {
     this._object = JSON.parse(body);
@@ -14,7 +15,8 @@ export class SwaggerMd {
     this._models = [];
     this._topLink = 
       `${this._convertToLink(this._object.info.title)}-${this._convertToLink(this._object.info.version)}`;
-
+    this._tags = this._getTags();
+      
     this._filterWithTags();
     this._formatModels();
   }
@@ -39,8 +41,7 @@ export class SwaggerMd {
   }
 
   private _filterWithTags = (): void => {
-    const tags = this._getTags();
-    for (const tag of tags) {
+    for (const tag of this._tags) {
       let reqs: RequestWithData[] = []
       for (const path in this._object.paths) {
         for (const method in this._object.paths[path]) {
@@ -159,6 +160,11 @@ export class SwaggerMd {
   }
 
   private _printContents = (): void => {
+    this._tags.forEach((tag, i) => {
+      this._generated += `- ${tag}`;
+      this._generated += `\t- parameters${i === 0 ? "" : ("-" + i)}`;
+      this._generated += `\t- responses${i === 0 ? "" : ("-" + i)}`;
+    });
     this._generated += "[Schema](#schema)  \n";
     this._models.forEach((model) => {
       this._generated += `- [${model.name}](#${model.name.toLowerCase()})  \n`;
