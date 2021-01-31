@@ -17,11 +17,23 @@ export class SwaggerMd {
   }
 
   private _getTags = (): Tag[] => {
-    return this._object.tags;
+    const tags: Tag[] = [];
+    for (const path in this._object.paths) {
+      for (const method in this._object.paths[path]) {
+        const req = this._object.paths[path][method];
+        req.tags.forEach((tag: Tag) => {
+          if(!tags.includes(tag)){
+            tags.push(tag);
+          }
+        });
+      }
+    }
+    return tags;
   }
 
   private _filterWithTags = (): void => {
-    for (const tag of this._getTags()) {
+    const tags = this._getTags();
+    for (const tag of tags) {
       let reqs: RequestWithData[] = []
       for (const path in this._object.paths) {
         for (const method in this._object.paths[path]) {
@@ -44,23 +56,23 @@ export class SwaggerMd {
   }
 
   private _formatModels = (): void => {
-    for (const mName in this._object.definitions) {
+    for (const mName in this._object.components.schemas) {
       let properties: FormattedModelProperty[] = [];
       let model: FormattedModel =
       {
         name: mName,
-        type: this._object.definitions[mName].type !== undefined ? this._object.definitions[mName].type : " - ",
+        type: this._object.components.schemas[mName].type !== undefined ? this._object.components.schemas[mName].type : " - ",
         properties
       }
-      for (const pName in this._object.definitions[mName].properties) {
-        const property: ModelsProperty = this._object.definitions[mName].properties[pName];
+      for (const pName in this._object.components.schemas[mName].properties) {
+        const property: ModelsProperty = this._object.components.schemas[mName].properties[pName];
         const required =
-          this._object.definitions[mName].required != null ?
-            this._object.definitions[mName].required.includes(pName) :
+          this._object.components.schemas[mName].required != null ?
+            this._object.components.schemas[mName].required.includes(pName) :
             false;
         const ref =
           property.$ref != null ?
-            property.$ref.replace("#/definitions/", "") :
+            property.$ref.replace("#/components/schemas/", "") :
             "";
 
         properties.push(
@@ -83,13 +95,13 @@ export class SwaggerMd {
   }
 
   private _printVersion = (): void => {
-    this._generated += `version: ${this._object.swagger}  \n`;
+    this._generated += `version: ${this._object.info.version}  \n`;
   }
 
   private _printRequest = (reqs: RequestWithData[]): void => {
     for (const req of reqs) {
       this._generated += `#### ${req.method} ${req.endpoint}\n`;
-      this._generated += `${req.request.description}  \n`;
+      this._generated += `${req.request.description !== undefined ? req.request.description: ""}  \n`;
       if (req.request.parameters == null || req.request.parameters.length <= 0) { }
       else {
         this._generated += `##### Parameters  \n`;
@@ -109,7 +121,7 @@ export class SwaggerMd {
         const _description = res.description != null ? res.description : " - ";
         const _schema = res.schema == null ? " - " :
           res.schema.$ref == null ? " - " :
-            `[${res.schema.$ref.replace("#/definitions/", "")}](#${res.schema.$ref.replace("#/definitions/", "").toLowerCase()})`;
+            `[${res.schema.$ref.replace("#/definitions/", "")}](#${res.schema.$ref.replace("#/components/schemas/", "").toLowerCase()})`;
         this._generated += `| ${resCode} | ${_description} | ${_schema} |\n`;
       }
       this._generated += `\n`;
