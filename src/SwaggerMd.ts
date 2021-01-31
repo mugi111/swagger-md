@@ -45,13 +45,15 @@ export class SwaggerMd {
       let reqs: RequestWithData[] = []
       for (const path in this._object.paths) {
         for (const method in this._object.paths[path]) {
-          reqs.push(
-            {
-              endpoint: path,
-              method: method,
-              request: this._object.paths[path][method]
-            }
-          );
+          if (this._object.paths[path][method].tags.includes(tag)) {
+            reqs.push(
+              {
+                endpoint: path,
+                method: method,
+                request: this._object.paths[path][method]
+              }
+            );
+          }
         }
       }
       this._filteredReqs.push(
