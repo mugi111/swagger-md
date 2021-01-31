@@ -5,15 +5,22 @@ export class SwaggerMd {
   private _generated: string;
   private _filteredReqs: ClassifiedRequests[];
   private _models: FormattedModel[];
+  private _topLink: string;
 
   constructor(body: string) {
     this._object = JSON.parse(body);
     this._generated = "";
     this._filteredReqs = [];
     this._models = [];
+    this._topLink = 
+      `${this._convertToLink(this._object.info.title)}-${this._convertToLink(this._object.info.version)}`;
 
     this._filterWithTags();
     this._formatModels();
+  }
+
+  private _convertToLink = (s: string): string => {
+    return s.replace("\n", "-").toLowerCase();
   }
 
   private _getTags = (): Tag[] => {
@@ -96,7 +103,7 @@ export class SwaggerMd {
 
   private _printRequest = (reqs: RequestWithData[]): void => {
     for (const req of reqs) {
-      this._generated += `#### ${req.method} ${req.endpoint}\n`;
+      this._generated += `#### ${req.method.toUpperCase()} ${req.endpoint}\n`;
       this._generated += `${req.request.description !== undefined ? req.request.description: ""}  \n`;
       if (req.request.parameters == null || req.request.parameters.length <= 0) { }
       else {
@@ -120,6 +127,7 @@ export class SwaggerMd {
             `[${res.schema.$ref.replace("#/definitions/", "")}](#${res.schema.$ref.replace("#/components/schemas/", "").toLowerCase()})`;
         this._generated += `| ${resCode} | ${_description} | ${_schema} |\n`;
       }
+      this._generated += `[Top](#${this._topLink})  \n`;
       this._generated += `\n`;
     }
   }
@@ -151,10 +159,7 @@ export class SwaggerMd {
   }
 
   private _printContents = (): void => {
-    this._generated += "[Endpoint](#endpoint)  \n";
-    this._generated += "---\n";
     this._generated += "[Schema](#schema)  \n";
-    this._generated += "---\n";
     this._models.forEach((model) => {
       this._generated += `- [${model.name}](#${model.name.toLowerCase()})  \n`;
     });
