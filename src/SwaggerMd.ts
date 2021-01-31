@@ -6,7 +6,7 @@ export class SwaggerMd {
   private _filteredReqs: ClassifiedRequests[];
   private _models: FormattedModel[];
   private _topLink: string;
-  private _tags: Tag[];
+  private _tags: string[];
 
   constructor(body: string) {
     this._object = JSON.parse(body);
@@ -25,12 +25,12 @@ export class SwaggerMd {
     return s.replace("\n", "-").toLowerCase();
   }
 
-  private _getTags = (): Tag[] => {
-    const tags: Tag[] = [];
+  private _getTags = (): string[] => {
+    const tags: string[] = [];
     for (const path in this._object.paths) {
       for (const method in this._object.paths[path]) {
         const req = this._object.paths[path][method];
-        req.tags.forEach((tag: Tag) => {
+        req.tags.forEach((tag) => {
           if(!tags.includes(tag)){
             tags.push(tag);
           }
@@ -138,7 +138,7 @@ export class SwaggerMd {
   private _printRequests = (): void => {
     this._generated += `## Endpoint  \n`;
     for (const reqs of this._filteredReqs) {
-      this._generated += `### ${reqs.tag.name}  \n`;
+      this._generated += `### ${reqs.tag}  \n`;
       this._printRequest(reqs.requests);
     }
   }
@@ -163,9 +163,9 @@ export class SwaggerMd {
 
   private _printContents = (): void => {
     this._tags.forEach((tag, i) => {
-      this._generated += `- [${tag.name}](${tag.name.toLowerCase()})  \n`;
-      this._generated += `\t- parameters${i === 0 ? "" : ("-" + i)}  \n`;
-      this._generated += `\t- responses${i === 0 ? "" : ("-" + i)}  \n`;
+      this._generated += `- [${tag}](#${tag.toLowerCase()})  \n`;
+      this._generated += `\t- [parameters](parameters${i === 0 ? "" : ("-" + i)})  \n`;
+      this._generated += `\t- [responses](responses${i === 0 ? "" : ("-" + i)})  \n`;
     });
     this._generated += "[Schema](#schema)  \n";
     this._models.forEach((model) => {

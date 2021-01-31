@@ -55,7 +55,7 @@ export interface Responses {
 }
 
 export interface Request {
-  tags: Tag[];
+  tags: string[];
   summary: string;
   description: string;
   operationId: string;
@@ -72,7 +72,7 @@ export interface RequestWithData {
 }
 
 export interface ClassifiedRequests {
-  tag: Tag;
+  tag: string;
   requests: RequestWithData[];
 }
 
