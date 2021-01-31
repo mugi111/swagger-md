@@ -124,7 +124,7 @@ export class SwaggerMd {
         const _description = res.description != null ? res.description : " - ";
         const _schema = res.schema == null ? " - " :
           res.schema.$ref == null ? " - " :
-            `[${res.schema.$ref.replace("#/definitions/", "")}](#${res.schema.$ref.replace("#/components/schemas/", "").toLowerCase()})`;
+            `[${res.schema.$ref.replace("#/components/schemas/", "")}](#${res.schema.$ref.replace("#/components/schemas/", "").toLowerCase()})`;
         this._generated += `| ${resCode} | ${_description} | ${_schema} |\n`;
       }
       this._generated += `[Top](#${this._topLink})  \n`;
@@ -135,7 +135,7 @@ export class SwaggerMd {
   private _printRequests = (): void => {
     this._generated += `## Endpoint  \n`;
     for (const reqs of this._filteredReqs) {
-      this._generated += `### Tag - ${reqs.tag.name}  \n`;
+      this._generated += `### ${reqs.tag.name}  \n`;
       this._printRequest(reqs.requests);
     }
   }
