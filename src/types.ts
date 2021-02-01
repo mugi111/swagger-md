@@ -112,6 +112,7 @@ interface Xml {
 export interface ModelsProperty {
   type: string;
   format: string;
+  description: string;
   example: string;
   $ref: string;
   xml: Xml;
@@ -121,11 +122,13 @@ export interface Schema {
   type: string;
   required: string[];
   properties: { [key: string]: ModelsProperty };
+  enum: any[];
 }
 
 export interface FormattedModelProperty {
   name: string;
   type: string;
+  description: string;
   format: string;
   example: string;
   required: boolean;
@@ -136,6 +139,11 @@ export interface FormattedModel {
   name: string;
   type: string;
   properties: FormattedModelProperty[];
+}
+
+export interface FormattedEnum {
+  name: string;
+  value: any[];
 }
 
 export interface Info {
