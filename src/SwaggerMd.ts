@@ -163,7 +163,7 @@ export class SwaggerMd {
 
   private _printContents = (): void => {
     this._filteredReqs.forEach((fReq, i) => {
-      this._generated += `- [${fReq.tag}](#${fReq.tag.toLowerCase()})  \n`;
+      this._generated += `[${fReq.tag}](#${fReq.tag.toLowerCase()})  \n`;
       fReq.requests.forEach((req) => {
         this._generated += `- [${req.method.toUpperCase()} ${req.endpoint}](#${this._convertToLink(req.method)}-${this._convertToLink(req.endpoint)})  \n`;
         this._generated += `\t- [parameters](#parameters${i === 0 ? "" : ("-" + i)})  \n`;
