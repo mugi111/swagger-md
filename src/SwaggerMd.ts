@@ -167,8 +167,9 @@ export class SwaggerMd {
       fReq.requests.forEach((req) => {
         this._generated += `- [${req.method.toUpperCase()} ${req.endpoint}](#${this._convertToLink(req.method)}-${this._convertToLink(req.endpoint)})  \n`;
         this._generated += `\t- [parameters](#parameters${i === 0 ? "" : ("-" + i)})  \n`;
-        this._generated += `\t- [responses](#responses${i === 0 ? "" : ("-" + i)})  \n`;  
+        this._generated += `\t- [responses](#responses${i === 0 ? "" : ("-" + i)})  \n`;
       });
+      this._generated += "  \n";
     });
     this._generated += "[Schema](#schema)  \n";
     this._models.forEach((model) => {
