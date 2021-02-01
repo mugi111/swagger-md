@@ -126,8 +126,9 @@ export class SwaggerMd {
         this._generated += `| Name | Type | Description |\n`;
         this._generated += `|------|------|-------------|\n`;
         for (const param of req.request.parameters) {
-          const _type = param.type !== undefined ? param.type : " - ";
-          this._generated += `| ${param.name} | ${_type} | ${param.description} |\n`;
+          const _type = param.type != undefined ? param.type : " - ";
+          const _description = param.type != undefined ? param.description : " - ";
+          this._generated += `| ${param.name} | ${_type} | ${_description} |\n`;
         }
         this._generated += `\n`;
       }
