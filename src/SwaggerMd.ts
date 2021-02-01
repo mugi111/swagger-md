@@ -130,7 +130,7 @@ export class SwaggerMd {
             `[${res.schema.$ref.replace("#/components/schemas/", "")}](#${res.schema.$ref.replace("#/components/schemas/", "").toLowerCase()})`;
         this._generated += `| ${resCode} | ${_description} | ${_schema} |\n`;
       }
-      this._generated += `[Top](#${this._topLink})  \n`;
+      this._generated += `\n[Top](#${this._topLink})  \n`;
       this._generated += `\n`;
     }
   }
