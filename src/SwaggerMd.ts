@@ -123,12 +123,12 @@ export class SwaggerMd {
       if (req.request.parameters == null || req.request.parameters.length <= 0) { }
       else {
         this._generated += `##### Parameters  \n`;
-        this._generated += `| Name | Type | Description |\n`;
-        this._generated += `|------|------|-------------|\n`;
+        this._generated += `| Name | In | Description |\n`;
+        this._generated += `|------|----|-------------|\n`;
         for (const param of req.request.parameters) {
-          const _type = param.type != undefined ? param.type : " - ";
+          let _in = param.in === "path" ? "route" : param.in;
           const _description = param.type != undefined ? param.description : " - ";
-          this._generated += `| ${param.name} | ${_type} | ${_description} |\n`;
+          this._generated += `| ${param.name} | ${_in} | ${_description} |\n`;
         }
         this._generated += `\n`;
       }
