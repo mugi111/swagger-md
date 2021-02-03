@@ -1,8 +1,8 @@
-interface OpenApi {
+export interface OpenApi {
   openapi: string;
   info: Info;
   servers: Server[] | null | undefined;
-  paths: Path[];
+  paths: Path;
   components: Components | null | undefined;
   security: any;
   Tags: any;
@@ -46,10 +46,10 @@ interface ServerVariableObject {
 }
 
 interface Path {
-  [key: string]: PathItemObject[]
+  [key: string]: PathItemObject;
 }
 
-interface PathItemObject {
+export interface PathItemObject {
   $ref: string | null | undefined;
   summary: string | null | undefined;
   description: string | null | undefined;
@@ -65,7 +65,7 @@ interface PathItemObject {
   parameters: (ParameterObject | ReferenceObject)[] | null | undefined;
 }
 
-interface OperationObject {
+export interface OperationObject {
   tags: string[];
   summary: string | null | undefined;
   description: string | null | undefined;
@@ -172,4 +172,27 @@ interface RequestBodyObject {
   description: string | null | undefined;
   content: { [key: string]: MediaTypeObject };
   required: boolean | null | undefined;
+}
+
+export interface FormattedSchema {
+  name: string;
+  description: string;
+  type: string;
+}
+
+export interface FormattedEnum {
+  name: string;
+  description: string;
+  value: any[];
+}
+
+export interface FilteredRequest {
+  tag: string;
+  requests: RequestData[];
+}
+
+export interface RequestData {
+  endpoint: string;
+  method: string;
+  request: OperationObject;
 }
