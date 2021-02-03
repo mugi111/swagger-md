@@ -117,9 +117,9 @@ export class SwaggerMd {
     }
   }
 
-  // private _printInfo = (): void => {
-  //   this._generated += `# ${this._object.info.title} ${this._object.info.version}  \n`;
-  // }
+  private _printInfo = (): void => {
+    this._generated += `# ${this._object.info.title} ${this._object.info.version}  \n`;
+  }
 
   // private _printRequest = (reqs: RequestWithData[]): void => {
   //   for (const req of reqs) {
@@ -217,7 +217,7 @@ export class SwaggerMd {
   // }
 
   output = (contents: boolean): void => {
-    // this._printInfo();
+    this._printInfo();
     // if (contents) this._printContents();
     // this._printRequests();
     // this._printSchemas();
