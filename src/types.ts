@@ -96,26 +96,24 @@ interface ParameterObject {
   content: any;
 }
 
-interface SchemaObject {
+export interface SchemaObject {
   title: string;
   type: string;
   required: string[] | null | undefined;
-  enum: any[] | null | undefined;
-  properties: Property[];
+  enum: any[];
+  properties: { [key: string]: SchemaObject };
+  description: string;
   nullable: boolean | null | undefined;
   discriminator: any;
   readOnly: boolean | null | undefined;
   writeOnly: boolean | null | undefined;
   xml: any;
   externalDocs: any;
+  example: any;
   deprecated: boolean | null | undefined;
 }
 
-interface Property {
-  [key: string]: SchemaObject;
-}
-
-interface ReferenceObject {
+export interface ReferenceObject {
   $ref: string;
 }
 
@@ -176,8 +174,18 @@ interface RequestBodyObject {
 
 export interface FormattedSchema {
   name: string;
-  description: string;
   type: string;
+  depricated: boolean;
+  properties: FormattedProperty[];
+}
+
+export interface FormattedProperty {
+  name: string;
+  type: string;
+  description: string;
+  example: string;
+  required: boolean;
+  ref: string;
 }
 
 export interface FormattedEnum {

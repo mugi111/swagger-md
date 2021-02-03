@@ -1,4 +1,4 @@
-import { OpenApi, FormattedSchema, FormattedEnum, PathItemObject, OperationObject, FilteredRequest, RequestData } from "./types";
+import { OpenApi, FormattedSchema, FormattedEnum, PathItemObject, OperationObject, FilteredRequest, RequestData, SchemaObject, ReferenceObject, FormattedProperty } from "./types";
 import * as http from "http";
 
 export class SwaggerMd {
@@ -21,7 +21,7 @@ export class SwaggerMd {
     this._tags = this._getTags();
       
     this._filterWithTags();
-    // this._formatSchemas();
+    this._formatSchemas();
   }
 
   private _convertToLink = (s: string): string => {
@@ -73,50 +73,49 @@ export class SwaggerMd {
     }
   }
 
-  // private _formatModels = (): void => {
-  //   for (const mName in this._object.components.schemas) {
-  //     if (this._object.components.schemas[mName].enum === undefined) {
-  //       let properties: FormattedModelProperty[] = [];
-  //       let m: FormattedModel =
-  //       {
-  //         name: mName,
-  //         type: this._object.components.schemas[mName].type !== undefined ? this._object.components.schemas[mName].type : " - ",
-  //         properties
-  //       }
-  //       for (const pName in this._object.components.schemas[mName].properties) {
-  //         const property: ModelsProperty = this._object.components.schemas[mName].properties[pName];
-  //         const required =
-  //           this._object.components.schemas[mName].required != null ?
-  //             this._object.components.schemas[mName].required.includes(pName) :
-  //             false;
-  //         const ref =
-  //           property.$ref != null ?
-  //             property.$ref.replace("#/components/schemas/", "") :
-  //             "";
-
-  //         properties.push(
-  //           {
-  //             name: pName,
-  //             type: property.type !== undefined ? property.type : " - ",
-  //             format: property.format !== undefined ? property.format : " - ",
-  //             description: property.description !== undefined ? property.description : " - ",
-  //             example: property.example !== undefined ? property.example : " - ",
-  //             required,
-  //             ref
-  //           }
-  //         );
-  //       }
-  //       this._models.push(m);
-  //     } else {
-  //       let e: FormattedEnum = 
-  //       {
-  //         name: mName,
-  //         value: this._object.components.schemas[mName].enum
-  //       }
-  //       this._enums.push(e);
-  //     }
-  //   }
-  // }
+  private _formatSchemas = (): void => {
+    for (const sn in this._object.components?.schemas) {
+      const asSchema = this._object.components?.schemas[sn] as SchemaObject;
+      const asRef = this._object.components?.schemas[sn] as ReferenceObject;
+      if (asSchema.type != undefined) {
+        let properties: FormattedProperty[] = [];
+        let s: FormattedSchema =
+        {
+          name: sn,
+          type: asSchema.type !== undefined ? asSchema.type : " - ",
+          depricated: asSchema.deprecated != null ? asSchema.deprecated : false,
+          properties
+        }
+        for (const pn in asSchema.properties) {
+          const property: SchemaObject = asSchema.properties[pn];
+          const required =
+            asSchema.required != null ?
+            asSchema.required.includes(pn) :
+            false;
+          const ref = asRef.$ref;
+          properties.push(
+            {
+              name: pn,
+              type: property.type !== undefined ? property.type : " - ",
+              description: property.description !== undefined ? property.description : " - ",
+              example: property.example !== undefined ? property.example : " - ",
+              required,
+              ref 
+            }
+          );
+        }
+        this._schemas.push(s);
+      } else {
+        let e: FormattedEnum = 
+        {
+          name: sn,
+          description: asSchema.description,
+          value: asSchema.enum
+        }
+        this._enums.push(e);
+      }
+    }
+  }
 
   // private _printInfo = (): void => {
   //   this._generated += `# ${this._object.info.title} ${this._object.info.version}  \n`;
