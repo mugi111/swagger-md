@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@mugi111/swagger-md@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@mugi111/swagger-md/-/swagger-md-0.0.1.tgz#c548079379ddf359b25e5c440a6e3335deb9c58a"
-  integrity sha512-h288ohBWxo7lShKJgHIydXb3kz2Zfcq0vePcH82S5GLeRLMnWebF9pxT4iiI399JxSnXq2mKa8P/7U/w/4n9LQ==
+"@mugi111/swagger-md@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@mugi111/swagger-md/-/swagger-md-0.1.0.tgz#4a5cbe7b4442ac604dd136951264ccbe4d2fb10e"
+  integrity sha512-QDR6SNUTC9OGaFWPQYuyEGyXKbk9bqapp8e3Nk6rF9w0CJ7E0GJT67JmaesoBJMT8BoslFDiAgq/z0n7tKIp8A==
   dependencies:
     "@types/chalk" "^2.2.0"
     "@types/node" "^14.14.14"
