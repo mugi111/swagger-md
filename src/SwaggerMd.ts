@@ -166,7 +166,13 @@ export class SwaggerMd {
     this._generated += `| Parameter | Type | description | Example | Required |\n`;
     this._generated += `|-----------|------|-------------|---------|----------|\n`;
     for (const property of properties) {
-      const typeText: string = this._schemas.some(e => e.name === property.ref) ? `[${property.ref}](#${property.ref.toLowerCase()})` : `${property.type}`;
+      let typeText: string = " - ";
+      if (this._schemas.some(e => e.name === property.ref) ||
+          this._enums.some(e => e.name === property.name)) {
+        typeText = `[${property.ref}](#${property.ref.toLowerCase()})`;
+      } else {
+        typeText = `${property.type}`;
+      }
       this._generated += `| ${property.name} | ${typeText} | ${property.description} | ${property.example} | ${property.required} |\n`;
     }
     this._generated += "\n";
