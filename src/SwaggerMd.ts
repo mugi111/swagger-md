@@ -76,7 +76,7 @@ export class SwaggerMd {
   private _formatSchemas = (): void => {
     for (const sn in this._object.components?.schemas) {
       const asSchema = this._object.components?.schemas[sn] as SchemaObject;
-      if (asSchema.type != undefined) {
+      if (asSchema.enum == null) {
         let properties: FormattedProperty[] = [];
         let s: FormattedSchema =
         {
@@ -200,29 +200,29 @@ export class SwaggerMd {
   //   });
   // }
 
-  // private _printEnums = (): void => {
-  //   this._generated += `## Enum  \n`;
-  //   this._enums.forEach(e => {
-  //     this._generated += `### ${e.name}  \n`;
-  //     this._printEnum(e.value);
-  //   })
-  // }
+  private _printEnums = (): void => {
+    this._generated += `## Enum  \n`;
+    this._enums.forEach(e => {
+      this._generated += `### ${e.name}  \n`;
+      this._printEnum(e.value);
+    })
+  }
 
-  // private _printEnum = (value: any[]): void => {
-  //   this._generated += `| value |\n`;
-  //   this._generated += `|-------|\n`;
-  //   value.forEach(v => {
-  //     this._generated += `| ${v} |\n`;
-  //   })
-  //   this._generated += "\n";
-  // }
+  private _printEnum = (value: any[]): void => {
+    this._generated += `| value |\n`;
+    this._generated += `|-------|\n`;
+    value.forEach(v => {
+      this._generated += `| ${v} |\n`;
+    })
+    this._generated += "\n";
+  }
 
   output = (contents: boolean): void => {
     this._printInfo();
     // if (contents) this._printContents();
     this._printRequests();
     this._printSchemas();
-    // this._printEnums();
+    this._printEnums();
     // return this._generated;
   }
 }
