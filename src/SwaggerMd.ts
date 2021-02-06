@@ -1,4 +1,4 @@
-import { OpenApi, FormattedSchema, FormattedEnum, PathItemObject, OperationObject, FilteredRequest, RequestData, SchemaObject, ReferenceObject, FormattedProperty } from "./types";
+import { OpenApi, FormattedSchema, FormattedEnum, PathItemObject, OperationObject, FilteredRequest, RequestData, SchemaObject, ReferenceObject, FormattedProperty, ResponseObject } from "./types";
 import * as http from "http";
 
 export class SwaggerMd {
@@ -121,45 +121,48 @@ export class SwaggerMd {
     this._generated += `# ${this._object.info.title} ${this._object.info.version}  \n`;
   }
 
-  // private _printRequest = (reqs: RequestWithData[]): void => {
-  //   for (const req of reqs) {
-  //     this._generated += `#### ${req.method.toUpperCase()} ${req.endpoint}\n`;
-  //     this._generated += `${req.request.description !== undefined ? req.request.description: ""}  \n`;
-  //     if (req.request.parameters == null || req.request.parameters.length <= 0) { }
-  //     else {
-  //       this._generated += `##### Parameters  \n`;
-  //       this._generated += `| Name | In | Description |\n`;
-  //       this._generated += `|------|----|-------------|\n`;
-  //       for (const param of req.request.parameters) {
-  //         let _in = param.in === "path" ? "route" : param.in;
-  //         const _description = param.type != undefined ? param.description : " - ";
-  //         this._generated += `| ${param.name} | ${_in} | ${_description} |\n`;
-  //       }
-  //       this._generated += `\n`;
-  //     }
-  //     this._generated += `#### Responses  \n`;
-  //     this._generated += `| Code | Description | Schema |\n`;
-  //     this._generated += `|------|-------------|--------|\n`;
-  //     for (const resCode in req.request.responses) {
-  //       const res: Response = req.request.responses[resCode];
-  //       const _description = res.description != null ? res.description : " - ";
-  //       const _schema = res.schema == null ? " - " :
-  //         res.schema.$ref == null ? " - " :
-  //           `[${res.schema.$ref.replace("#/components/schemas/", "")}](#${res.schema.$ref.replace("#/components/schemas/", "").toLowerCase()})`;
-  //       this._generated += `| ${resCode} | ${_description} | ${_schema} |\n`;
-  //     }
-  //     this._generated += `\n[Top](#${this._topLink})  \n`;
-  //     this._generated += `\n`;
-  //   }
-  // }
+  private _printRequest = (reqs: RequestData[]): void => {
+    for (const req of reqs) {
+      this._generated += `#### ${req.method.toUpperCase()} ${req.endpoint}\n`;
+      this._generated += `${req.request.description !== undefined ? req.request.description: ""}  \n`;
+      if (req.request.parameters == null || req.request.parameters.length <= 0) { }
+      else {
+        this._generated += `##### Parameters  \n`;
+        this._generated += `| Name | In | Description |\n`;
+        this._generated += `|------|----|-------------|\n`;
+        req.request.parameters.forEach((param: any) => {
+          console.log(param);
+          let _in = param.in === "path" ? "route" : param.in;
+          const _description = param.type != undefined ? param.description : " - ";
+          this._generated += `| ${param.name} | ${_in} | ${_description} |\n`;
+        });
+        this._generated += `\n`;
+      }
+      this._generated += `#### Responses  \n`;
+      this._generated += `| Code | Description | Type | Schema |\n`;
+      this._generated += `|------|-------------|------|--------|\n`;
+      for (const code in req.request.responses) {
+        const res: ResponseObject = req.request.responses[code];
+        const _description = res.description != null ? res.description : " - ";
+        for (const _type in res.content) {
+          const _schema = res.content[_type] == null ? " - " :
+            res.content[_type].schema == null ? " - " :
+              `[${res.content[_type].schema.$ref?.replace("#/components/schemas/", "")}](#${res.content[_type].schema.$ref?.replace("#/components/schemas/", "").toLowerCase()})`;
+          this._generated += `| ${code} | ${_description} | ${_type} | ${_schema} |\n`;
+        }
+      }
+      this._generated += `\n[Top](#${this._topLink})  \n`;
+      this._generated += `\n`;
+    }
+  }
 
-  // private _printRequests = (): void => {
-  //   this._generated += `## Endpoint  \n`;
-  //   for (const reqs of this._filteredReqs) {
-  //     this._generated += `### ${reqs.tag}  \n`;
-  //     this._printRequest(reqs.requests);
-  //   }
-  // }
+  private _printRequests = (): void => {
+    this._generated += `## Endpoint  \n`;
+    for (const reqs of this._req) {
+      this._generated += `### ${reqs.tag}  \n`;
+      this._printRequest(reqs.requests);
+    }
+  }
 
   // private _printProperties = (properties: FormattedModelProperty[]): void => {
   //   this._generated += `| Parameter | Type | description | Example | Required |\n`;
@@ -219,7 +222,7 @@ export class SwaggerMd {
   output = (contents: boolean): void => {
     this._printInfo();
     // if (contents) this._printContents();
-    // this._printRequests();
+    this._printRequests();
     // this._printSchemas();
     // this._printEnums();
     // return this._generated;

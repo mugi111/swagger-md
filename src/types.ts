@@ -73,7 +73,7 @@ export interface OperationObject {
   operationId: string | null | undefined;
   parameters: (ParameterObject | ReferenceObject)[] | null | undefined;
   requestBody: RequestBodyObject | ReferenceObject | null | undefined;
-  responses: ResponseObject;
+  responses: ResponseObject[];
   callbacks: any;
   deprecated: boolean;
   security: any;
@@ -111,25 +111,23 @@ export interface SchemaObject {
   externalDocs: any;
   example: any;
   deprecated: boolean | null | undefined;
+  items: SchemaObject | null | undefined;
+  $ref: string | null | undefined;
 }
 
 export interface ReferenceObject {
   $ref: string;
 }
 
-interface ResponseObject {
+export interface ResponseObject {
   description: string;
   headers: Header[] | null | undefined;
-  content: Content[] | null | undefined;
+  content: { [key: string]: MediaTypeObject } | null | undefined;
   links: Link[] | null | undefined;
 }
 
 interface Header {
   [key: string]: (ParameterObject | ReferenceObject);
-}
-
-interface Content {
-  [key: string]: MediaTypeObject;
 }
 
 interface MediaTypeObject {
