@@ -1,6 +1,6 @@
 {
   "name": "@mugi111/swagger-md",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "OpenApi json to markdown",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
