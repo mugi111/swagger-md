@@ -112,7 +112,7 @@ export interface SchemaObject {
   example: any;
   deprecated: boolean | null | undefined;
   items: SchemaObject | null | undefined;
-  $ref: string | null | undefined;
+  $ref: string;
 }
 
 export interface ReferenceObject {

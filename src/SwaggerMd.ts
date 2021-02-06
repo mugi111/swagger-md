@@ -76,7 +76,6 @@ export class SwaggerMd {
   private _formatSchemas = (): void => {
     for (const sn in this._object.components?.schemas) {
       const asSchema = this._object.components?.schemas[sn] as SchemaObject;
-      const asRef = this._object.components?.schemas[sn] as ReferenceObject;
       if (asSchema.type != undefined) {
         let properties: FormattedProperty[] = [];
         let s: FormattedSchema =
@@ -92,7 +91,7 @@ export class SwaggerMd {
             asSchema.required != null ?
             asSchema.required.includes(pn) :
             false;
-          const ref = asRef.$ref;
+          const ref = property.$ref == null ? "" : property.$ref.replace("#/components/schemas/", "");
           properties.push(
             {
               name: pn,
@@ -131,7 +130,6 @@ export class SwaggerMd {
         this._generated += `| Name | In | Description |\n`;
         this._generated += `|------|----|-------------|\n`;
         req.request.parameters.forEach((param: any) => {
-          console.log(param);
           let _in = param.in === "path" ? "route" : param.in;
           const _description = param.type != undefined ? param.description : " - ";
           this._generated += `| ${param.name} | ${_in} | ${_description} |\n`;
@@ -164,23 +162,23 @@ export class SwaggerMd {
     }
   }
 
-  // private _printProperties = (properties: FormattedModelProperty[]): void => {
-  //   this._generated += `| Parameter | Type | description | Example | Required |\n`;
-  //   this._generated += `|-----------|------|-------------|---------|----------|\n`;
-  //   for (const property of properties) {
-  //     const typeText: string = this._models.some(e => e.name === property.ref) ? `[${property.ref}](#${property.ref.toLowerCase()})` : `${property.type}`;
-  //     this._generated += `| ${property.name} | ${typeText} | ${property.description} | ${property.example} | ${property.required} |\n`;
-  //   }
-  //   this._generated += "\n";
-  // }
+  private _printProperties = (properties: FormattedProperty[]): void => {
+    this._generated += `| Parameter | Type | description | Example | Required |\n`;
+    this._generated += `|-----------|------|-------------|---------|----------|\n`;
+    for (const property of properties) {
+      const typeText: string = this._schemas.some(e => e.name === property.ref) ? `[${property.ref}](#${property.ref.toLowerCase()})` : `${property.type}`;
+      this._generated += `| ${property.name} | ${typeText} | ${property.description} | ${property.example} | ${property.required} |\n`;
+    }
+    this._generated += "\n";
+  }
 
-  // private _printSchemas = (): void => {
-  //   this._generated += `## Schema  \n`;
-  //   for (const model of this._models) {
-  //     this._generated += `### ${model.name}  \n`;
-  //     this._printProperties(model.properties);
-  //   }
-  // }
+  private _printSchemas = (): void => {
+    this._generated += `## Schema  \n`;
+    for (const schema of this._schemas) {
+      this._generated += `### ${schema.name}  \n`;
+      this._printProperties(schema.properties);
+    }
+  }
 
   // private _printContents = (): void => {
   //   this._filteredReqs.forEach((fReq, i) => {
@@ -223,7 +221,7 @@ export class SwaggerMd {
     this._printInfo();
     // if (contents) this._printContents();
     this._printRequests();
-    // this._printSchemas();
+    this._printSchemas();
     // this._printEnums();
     // return this._generated;
   }
